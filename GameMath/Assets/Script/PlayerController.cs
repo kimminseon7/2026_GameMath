@@ -9,13 +9,13 @@ public class PlayerController : MonoBehaviour
     public bool isLeftParrying = false;
     public bool isRightParrying = false;
 
-    public void OnLeftParry(InputValue value)
+    public void OnL(InputValue value)
     {
         isLeftParrying = value.isPressed;
         Debug.Log("Q 누름");
     }
 
-    public void OnRightParry(InputValue value)
+    public void OnR(InputValue value)
     {
         isRightParrying = value.isPressed;
         Debug.Log("E 누름");

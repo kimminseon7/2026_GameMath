@@ -17,10 +17,32 @@ public class ChaserEnemy : MonoBehaviour
     }
     void Update()
     {
-        if (!isDashing)
+        if (Player == null) return;
+
+        if (isDashing)
         {
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
-            
+            float distance = Vector3.Distance(transform.position, Player.position);
+            if (distance < detectionRange)
+            {
+                Debug.Log("발견! 돌진 모드로 전환");
+                isDashing = true;
+            }
+
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, Player.position);
+            if (distance > stopDistance)
+            {
+                Vector3 dir = (Player.position - transform.position).normalized;
+                rb.MovePosition(transform.position + dir * dashSpeed * Time.deltaTime);
+            }
+            else
+            {
+                CheckParry();
+                isDashing = false;
+            }
         }
         
     }
@@ -28,5 +50,16 @@ public class ChaserEnemy : MonoBehaviour
     void CheckParry()
     {
         PlayerController pc = Player.GetComponent<PlayerController>();
+
+        if (pc.isLeftParrying = pc.isRightParrying)
+        {
+            Debug.Log("패링 성공! 적 제거");
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("패링 실패!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
